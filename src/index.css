@@ -109,3 +109,111 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+/* ==========================================
+   Estilos para el Catálogo y Tarjetas (Paso 1)
+   ========================================== */
+
+/* Contenedor general del catálogo */
+.catalog-container {
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* Grilla adaptable de productos */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+  text-align: left; /* Alinea el texto a la izquierda dentro de las tarjetas */
+}
+
+/* Tarjeta individual de producto */
+.product-card {
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-border);
+}
+
+/* Envoltorio de imagen / Placeholder */
+.image-wrapper {
+  width: 100%;
+  height: 180px;
+  background-color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder-image {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Contenido de la tarjeta */
+.product-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 8px 0;
+}
+
+.product-description {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin-bottom: 16px;
+  flex-grow: 1;
+  line-height: 1.4;
+}
+
+/* Pie de tarjeta: precio y categoría */
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.product-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.category-badge {
+  background-color: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}

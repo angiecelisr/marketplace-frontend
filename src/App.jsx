@@ -48,7 +48,7 @@ export default function App() {
     setIsAuthenticated(false);
   };
 
-  // Manejador para eliminar un producto (Módulo 4)
+  // Manejador para eliminar un producto
   const handleDeleteProduct = async (id) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
       try {
@@ -74,8 +74,8 @@ export default function App() {
 
   // Filtrado de productos en frontend
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = product.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          product.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'ALL' || 
                             product.category?.name === selectedCategory ||
                             String(product.categoryId) === selectedCategory;
@@ -83,9 +83,9 @@ export default function App() {
   });
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', maxWidth: '1000px', margin: '0 auto', color: '#e0e0e0' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid #444', paddingBottom: '1rem' }}>
-        <h1 style={{ color: '#ffffff', margin: 0 }}>Marketplace App</h1>
+    <div className="catalog-container">
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid var(--border)', paddingBottom: '1rem' }}>
+        <h1 style={{ color: 'var(--text-h)', margin: 0 }}>Marketplace App</h1>
         {isAuthenticated && (
           <button 
             onClick={handleLogout}
@@ -105,7 +105,7 @@ export default function App() {
 
       {/* Catálogo de Productos */}
       <section style={{ marginTop: '3rem' }}>
-        <h2 style={{ borderBottom: '2px solid #333', paddingBottom: '0.5rem', color: '#ffffff' }}>Catálogo de Productos</h2>
+        <h2 style={{ borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem', color: 'var(--text-h)' }}>Catálogo de Productos</h2>
 
         {/* Controles de Búsqueda y Filtro */}
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
@@ -114,12 +114,12 @@ export default function App() {
             placeholder="Buscar productos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ flex: 1, minWidth: '200px', padding: '0.6rem', borderRadius: '4px', border: '1px solid #444', backgroundColor: '#262626', color: '#fff' }}
+            style={{ flex: 1, minWidth: '200px', padding: '0.6rem', borderRadius: '4px', border: '1px solid var(--border)', backgroundColor: 'var(--code-bg)', color: 'var(--text)' }}
           />
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            style={{ padding: '0.6rem', borderRadius: '4px', border: '1px solid #444', backgroundColor: '#262626', color: '#fff' }}
+            style={{ padding: '0.6rem', borderRadius: '4px', border: '1px solid var(--border)', backgroundColor: 'var(--code-bg)', color: 'var(--text)' }}
           >
             <option value="ALL">Todas las Categorías</option>
             <option value="Servicios">Servicios</option>
@@ -127,54 +127,41 @@ export default function App() {
           </select>
         </div>
 
-        {loading && <p style={{ color: '#aaa' }}>Cargando productos...</p>}
+        {loading && <p style={{ color: 'var(--text)' }}>Cargando productos...</p>}
         {error && <p style={{ color: '#ff6b6b' }}>{error}</p>}
 
         {!loading && !error && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.5rem' }}>
+          <div className="product-grid">
             {filteredProducts.length === 0 ? (
-              <p style={{ color: '#aaa' }}>No se encontraron productos coincidentes.</p>
+              <p style={{ color: 'var(--text)' }}>No se encontraron productos coincidentes.</p>
             ) : (
               filteredProducts.map((product) => (
                 <div 
                   key={product.id} 
+                  className="product-card"
                   onClick={() => setSelectedProduct(product)}
-                  style={{ 
-                    border: '1px solid #333', 
-                    borderRadius: '8px', 
-                    padding: '1rem', 
-                    backgroundColor: '#1e1e1e', 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    justifyContent: 'space-between',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
-                    cursor: 'pointer'
-                  }}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <div>
-                    <div style={{ width: '100%', height: '180px', backgroundColor: '#2a2a2a', borderRadius: '6px', overflow: 'hidden', marginBottom: '0.8rem' }}>
-                      <img 
-                        src={getImageUrl(product.imageUrl)} 
-                        alt={product.title} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                        onError={(e) => {
-                          e.target.onerror = null; 
-                          e.target.src = PLACEHOLDER_IMAGE;
-                        }}
-                      />
-                    </div>
-                    <h3 style={{ margin: '0.5rem 0', color: '#ffffff', fontSize: '1.1rem' }}>{product.title}</h3>
-                    <p style={{ color: '#bbb', fontSize: '0.9rem', lineHeight: '1.4', marginBottom: '1rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {product.description}
-                    </p>
+                  <div className="image-wrapper">
+                    <img 
+                      src={getImageUrl(product.imageUrl)} 
+                      alt={product.title} 
+                      onError={(e) => {
+                        e.target.onerror = null; 
+                        e.target.src = PLACEHOLDER_IMAGE;
+                      }}
+                    />
                   </div>
 
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
-                      <span style={{ fontWeight: 'bold', fontSize: '1.25rem', color: '#4da6ff' }}>
+                  <div className="product-info">
+                    <h3 className="product-title">{product.title}</h3>
+                    <p className="product-description">{product.description}</p>
+
+                    <div className="product-footer">
+                      <span className="product-price">
                         ${Number(product.price).toLocaleString()}
                       </span>
-                      <span style={{ fontSize: '0.75rem', background: '#333', color: '#ccc', padding: '0.25rem 0.6rem', borderRadius: '12px' }}>
+                      <span className="category-badge">
                         {product.category?.name || 'Servicios'}
                       </span>
                     </div>
@@ -213,33 +200,32 @@ export default function App() {
       {/* Modal de Detalle de Producto */}
       {selectedProduct && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ backgroundColor: '#181818', padding: '2rem', borderRadius: '8px', maxWidth: '500px', width: '90%', maxHeight: '90vh', overflowY: 'auto', position: 'relative', border: '1px solid #444' }}>
+          <div style={{ backgroundColor: 'var(--code-bg)', padding: '2rem', borderRadius: '12px', maxWidth: '500px', width: '90%', maxHeight: '90vh', overflowY: 'auto', position: 'relative', border: '1px solid var(--border)' }}>
             <button 
               onClick={() => setSelectedProduct(null)}
-              style={{ position: 'absolute', top: '10px', right: '15px', background: 'none', border: 'none', color: '#fff', fontSize: '1.5rem', cursor: 'pointer' }}
+              style={{ position: 'absolute', top: '10px', right: '15px', background: 'none', border: 'none', color: 'var(--text-h)', fontSize: '1.5rem', cursor: 'pointer' }}
             >
               &times;
             </button>
-            <div style={{ width: '100%', height: '250px', backgroundColor: '#2a2a2a', borderRadius: '6px', overflow: 'hidden', marginBottom: '1rem' }}>
+            <div className="image-wrapper" style={{ height: '250px', borderRadius: '8px', marginBottom: '1rem' }}>
               <img 
                 src={getImageUrl(selectedProduct.imageUrl)} 
                 alt={selectedProduct.title} 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={(e) => {
                   e.target.onerror = null; 
                   e.target.src = PLACEHOLDER_IMAGE;
                 }}
               />
             </div>
-            <h2 style={{ color: '#fff', marginTop: 0 }}>{selectedProduct.title}</h2>
-            <p style={{ color: '#4da6ff', fontSize: '1.5rem', fontWeight: 'bold' }}>
+            <h2 className="product-title" style={{ fontSize: '1.5rem' }}>{selectedProduct.title}</h2>
+            <p className="product-price" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
               ${Number(selectedProduct.price).toLocaleString()}
             </p>
-            <p style={{ color: '#ccc', lineHeight: '1.5' }}>{selectedProduct.description}</p>
+            <p className="product-description">{selectedProduct.description}</p>
             <div style={{ marginTop: '1.5rem', textAlign: 'right' }}>
               <button 
                 onClick={() => setSelectedProduct(null)}
-                style={{ padding: '0.6rem 1.2rem', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                style={{ padding: '0.6rem 1.2rem', backgroundColor: 'var(--accent)', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
               >
                 Cerrar
               </button>
